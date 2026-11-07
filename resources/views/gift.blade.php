@@ -151,21 +151,6 @@
         .bow::before { left: 2px; transform: rotate(-22deg); }
         .bow::after { right: 2px; transform: rotate(22deg) scaleX(-1); }
 
-        .tag {
-            position: absolute;
-            right: -54px;
-            bottom: 34px;
-            padding: 0.3rem 0.7rem 0.3rem 1.2rem;
-            border: 2px solid #151515;
-            background: #fffdf6;
-            color: #151515;
-            font-size: 1rem;
-            line-height: 1.1;
-            text-align: left;
-            transform: rotate(9deg);
-            clip-path: polygon(14% 0, 100% 0, 100% 100%, 14% 100%, 0 50%);
-        }
-
         @keyframes idle {
             0%, 100% { transform: rotate(0); }
             50% { transform: rotate(-2deg) translateY(-4px); }
@@ -181,7 +166,6 @@
         .gift.opened { animation: none; cursor: default; }
         .gift.opened .lid { animation: lid-fly 0.9s cubic-bezier(.2, .8, .3, 1) forwards; }
         .gift.opened .box { animation: box-drop 0.7s 0.25s ease-in forwards; }
-        .gift.opened .tag { visibility: hidden; }
 
         @keyframes lid-fly {
             to { transform: translate(240px, -380px) rotate(400deg); }
@@ -347,6 +331,23 @@
             visibility: hidden;
         }
 
+        .human-bar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.3rem 0.4rem 0.3rem 0.8rem;
+            border: 2px solid var(--ink);
+            font-size: 1rem;
+            line-height: 1.15;
+        }
+
+        .human-bar strong { font-weight: 400; color: var(--red); }
+
+        .human-bar .button { padding: 0.15rem 0.6rem; font-size: 0.95rem; box-shadow: 3px 3px 0 #151515; }
+
         .clock.visible { visibility: visible; animation: blink 1s steps(1) infinite; }
 
         @keyframes blink { 50% { color: #5a120d; } }
@@ -357,6 +358,14 @@
     </style>
 </head>
 <body>
+    <div class="human-bar">
+        <span>verified human: <strong>{{ $human->name }}</strong><br>human #{{ $human->id }} of {{ $verifiedHumanCount }} so far</span>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="button secondary">log out</button>
+        </form>
+    </div>
+
     <div class="clock" id="clock" aria-hidden="true">3:00 AM</div>
 
     <span class="stamp" id="stamp">fragile. handle with prompts.</span>
@@ -367,7 +376,6 @@
         <button type="button" class="gift" id="gift" aria-label="Open the present">
             <span class="box"></span>
             <span class="lid"><span class="bow"></span></span>
-            <span class="tag">to: Sir Zeus<br>from: Nathaniel</span>
         </button>
     </div>
 
