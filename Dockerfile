@@ -37,4 +37,7 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "php artisan config:cache && php artisan migrate --force &&php artisan route:cache && php artisan view:cache && chown -R www-data:www-data storage bootstrap/cache && apache2-foreground"]
+# Render's free plan sleeps after 15 minutes without visitors, and this service doesn't
+# reliably wake back up. A background loop visits the public health check every 10 minutes
+# so the site always has traffic and never falls asleep.
+CMD ["sh", "-c", "php artisan config:cache && php artisan migrate --force && php artisan route:cache && php artisan view:cache && chown -R www-data:www-data storage bootstrap/cache && (while true; do sleep 600; curl -fsS -o /dev/null --max-time 60 \"${RENDER_EXTERNAL_URL:-https://https-nathaniel-meme-onrender-com.onrender.com}/up\" || true; done &) && apache2-foreground"]
