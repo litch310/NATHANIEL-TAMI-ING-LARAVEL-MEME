@@ -360,6 +360,7 @@
 <body>
     <div class="human-bar">
         <span>verified human: <strong>{{ $human->name }}</strong><br>human #{{ $human->id }} of {{ $verifiedHumanCount }} so far</span>
+        <a href="{{ route('notes.index') }}" class="button">notes</a>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="button secondary">log out</button>

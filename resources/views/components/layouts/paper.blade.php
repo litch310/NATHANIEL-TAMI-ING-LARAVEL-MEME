@@ -1,3 +1,4 @@
+@props(['title', 'wide' => false])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -80,7 +81,9 @@
 
         label.field { display: grid; gap: 0.2rem; }
 
-        input[type="text"], input[type="email"], input[type="password"] {
+        .sheet.wide { width: min(100%, 640px); transform: rotate(-0.3deg); }
+
+        input[type="text"], input[type="email"], input[type="password"], textarea {
             width: 100%;
             padding: 0.5rem 0.7rem;
             border: 2px solid var(--ink);
@@ -91,7 +94,53 @@
             outline: none;
         }
 
-        input:focus-visible { background: #fff8dc; }
+        textarea { min-height: 9rem; resize: vertical; line-height: 1.3; }
+
+        input:focus-visible, textarea:focus-visible { background: #fff8dc; }
+
+        /* ---------- Notes (CRUD) ---------- */
+        .topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.8rem; font-size: 1.05rem; }
+        .topbar a { color: var(--red); }
+
+        .flash {
+            margin-bottom: 1rem;
+            padding: 0.4rem 0.7rem;
+            border: 2px solid var(--green);
+            color: var(--green);
+            background: #eef8f0;
+        }
+
+        .notes { list-style: none; display: grid; gap: 0.8rem; margin: 1.2rem 0; }
+
+        .note {
+            padding: 0.7rem 0.9rem;
+            border: 2px solid var(--ink);
+            background: #fff;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+
+        .note h2, .note-title { font-family: 'Permanent Marker', cursive; font-weight: 400; font-size: 1.25rem; line-height: 1.15; }
+        .note h2 a { color: var(--ink); text-decoration: none; }
+        .note h2 a:hover { text-decoration: underline; }
+        .note p { margin-top: 0.25rem; color: #333; overflow-wrap: anywhere; }
+
+        .meta { font-size: 0.95rem; color: #666; }
+
+        .note-body { margin: 1rem 0 1.4rem; white-space: pre-line; overflow-wrap: anywhere; line-height: 1.35; }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+        .actions form { display: inline; }
+        .actions > a:not(.button) { color: var(--red); }
+
+        a.button { display: inline-block; text-decoration: none; }
+        .button.small { margin: 0; padding: 0.2rem 0.8rem; font-size: 1.05rem; box-shadow: 3px 3px 0 var(--ink); }
+        .button.danger { background: var(--red); color: #fff; }
+        .button.plain { background: var(--card); }
+
+        .empty { margin: 1.5rem 0; text-align: center; color: #666; }
+
+        .pager { display: flex; justify-content: space-between; margin-top: 0.5rem; }
+        .pager a { color: var(--red); }
 
         .error { color: var(--red); font-size: 1rem; }
 
@@ -193,7 +242,7 @@
     </style>
 </head>
 <body>
-    <main class="sheet">
+    <main @class(['sheet', 'wide' => $wide])>
         {{ $slot }}
     </main>
 

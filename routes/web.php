@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\GiftController;
+use App\Http\Controllers\NoteController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -14,5 +15,6 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', GiftController::class)->name('home');
+    Route::resource('notes', NoteController::class);
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
